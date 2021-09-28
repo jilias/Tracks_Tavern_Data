@@ -3,53 +3,16 @@ Final-Project-20
 
 ## Segment 1
 ### Overview
-- Dashboard: main sections defined - what should you wish to convey to stakeholders.
-- Project Scope via Client (Michael Rebers)
--- Inventory Analysis
---Sales Data
--- Purchasing Data
--- Use for Brought How much
--- How much is actually going out
-- Our scope
--- Data
--- Weather scope versus liquors sales pending
--Data to be shared Google Drive
--- Unsupervised Machine Learning/K means clustering (what it thinks it should be a group=list of subjective classes where all the values possible belong to; may need to input variables)
--- Context versus Content
--- Main focus
--- Possible Regression Model/linear regression
--- Random forest regression
--- Use for classification
--- Unsupervised classification
--- Facebook Prophet
--- Traditional linear regression
--- Heavy Discounts
--- Any specials
--- Elbow method
-### Roles
-- Team Coordinate
--- Jess Ilias
-- Circle
-- Database
--- George Calvo
-- Square
-- Responsible for the Repo
--- Jess Ilias
-- Triangle
-- Mock-up Machine learning
--- Aimerica Mangilit
-- X
--- Jose Alcivar
--Technologies to use
--- Jupyter Notebook
--- Alteryx
--- Pandas, SK Learning, Matplotlib, Plotly, Tableau, NumPy, SQLite
+We have chosen to review the Tracks Tavern sales data on both food and drinks and see how they correlate with the local weather. This provides an opportunity to work with a client and scope out a project for a local business.
 
-- George
--- Going to merge the csv files and add the date column
-- Jose
--- Clean up the weather data
-- Aimerica
--- Data Modeling
-- Jess
--- Data Modeling
+### Team
+George Calvo
+Aimerica Mangilit
+Jose Alcivar
+Jess Ilias
+
+#### Description of Data Source
+We received csv files provided directly from the client which were converted to sqlite. We sourced the weather data from openweather.org. Together we will union the data to create one massive data frame.
+##### Questions/Scope
+Initially the client wanted to see the sales and inventory analysis. As a team we decided to incorporate the weather data to see what liquors and food sold best in which season. We will further analysis to see how the liquors and food sales correlate with one another. As our data model, we are looking to use linear regression, unsupervised machine learning, and Facebook Prophet. 
+![Tracks_Tavern_Diagram_Planning](https://user-images.githubusercontent.com/82242081/135001252-b133bcc2-9ec4-41a1-9e37-b50111f4eab9.jpeg)
