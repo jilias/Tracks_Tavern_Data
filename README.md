@@ -6,10 +6,12 @@ Final-Project-20
 We have chosen to review the Tracks Tavern sales data on both food and drinks and see how they correlate with the local weather. This provides an opportunity to work with a client and scope out a project for a local business.
 
 ### Team
+Our team communicates via email and Slack to keep up to date. As well, we meet through Zoom to discuss in real time. We have each been assigned our branch to work with Jess Ilias as the individual approving merge request.
 George Calvo
 Aimerica Mangilit
 Jose Alcivar
 Jess Ilias
+
 
 #### Description of Data Source
 We received csv files provided directly from the client which were converted to sqlite. We sourced the weather data from openweather.org. Together we will union the data to create one massive data frame.
