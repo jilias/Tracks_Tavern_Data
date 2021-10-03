@@ -58,6 +58,12 @@ With the data into a single file, we performed an initial exploration into the d
 ![image](https://user-images.githubusercontent.com/82473940/135688526-2f8bd792-a501-42fb-8482-905d10f25f46.png)
 
 ##### Jess Ilias
+###### Unsupervised Machine Learning
+As we received the Tracks Tavern Data, one of the questions were interested in seeing was the grouping of the sales item. With unsupervised machine learning, we can see a clusterting of the item's type and was quite popular. This exploration in the data led to us to view the following in popularity:
+![bokeh_plot](https://user-images.githubusercontent.com/82242081/135752634-f4e69331-2f28-41ff-84e9-ee43bbb7fbf1.png)
+
+![pict_mod](https://user-images.githubusercontent.com/82242081/135752637-b7b7df67-639b-4807-80f0-bde760b57c23.jpg)
+As we move forward with the data, we will have to continue refining the process in order to have a better definition in clustering and continue forth with possible the Elbow method to see the changes in sales.
 ##### Jose Alcivar
 
 ###### Database Set Up
