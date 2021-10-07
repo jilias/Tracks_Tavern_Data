@@ -1,82 +1,31 @@
-Liquor_Sales
+sales
 -
-Item
-Item_Code FK >- Tracks_df.Item_code
-Item_Description
-Quantity
-Unit_Price
-Total_Sales_Amount
-Date
+item varchar
+item_code int
+quantity int
+unit_price float
+total_sales_amount float
+date date FK >- weather.dt
+Type varchar
 
-Food_Sales
+weather
 -
-Item
-Item_code FK >- Tracks_df.Item_code
-Item_Description
-Quantity
-Unit_Price
-Total_Sales_Amount
-Date
-
-Weather
--
-dt
-dt_iso FK >- Tracks_df.dt_iso
-timezone
-city_name
-lat
-lon
-temp
-feels_like
-temp_min
-temp_max
-pressure
-sea_level
-grnd_level
-humidity
-wind_speed
-wind_deg
-rain_1h
-rain_3h
-snow_1h
-snow_3h
-clouds_all
-weather_id
-weather_main
-weather_description
-weather_icon
-
-Tracks_df
--
-Item
-Item_code
-Item_Description
-Quantity
-Unit_Price
-Total_Sales_Amount
-Date
-dt
-dt_iso
-timezone
-city_name
-lat
-lon
-temp
-feels_like
-temp_min
-temp_max
-pressure
-sea_level
-grnd_level
-humidity
-wind_speed
-wind_deg
-rain_1h
-rain_3h
-snow_1h
-snow_3h
-clouds_all
-weather_id
-weather_main
-weather_description
-weather_icon
+dt date PK
+temp float
+feels_like float
+temp_min float
+temp_max float
+pressure float
+humidity float
+wind_speed float
+clouds_all float
+weather_main_Clear float
+weather_main_Clouds float
+weather_main_Drizzle float
+weather_main_Fog float
+weather_main_Haze float
+weather_main_Mist float
+weather_main_Rain float
+weather_main_Smoke float
+weather_main_Snow float
+weather_main_Thunderstorm float
