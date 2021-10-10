@@ -82,8 +82,9 @@ A challenge we encounter when setting up the database was the addition of relati
 
 
 ## Segment 2
-###### Google Slides
+###### Google Slides & Dashboard
 https://docs.google.com/presentation/d/1VRICFz63dp378-NGYYzXR_Gvo7oOsKVnM7d9bCKS_gs/edit?usp=sharing
+https://github.com/jilias/Tracks_Tavern_Data/blob/main/webmodel.py
 ### Tracks Tavern & Its dataset
 Tracks is a small business located in Milwaukee, Wisconsin currently owned by Michael Rebers
 Because it is a local neighborhood bar serving both drinks and foods Monday thru Wednesday, the data set primarily focus on the sales of food, drinks, and other items sold at the Tavern.
