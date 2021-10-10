@@ -78,3 +78,68 @@ In order to import our files from our current format (csv) to our database, we r
 The file can be viewed in a SQLite browser such as DB Browser. An advantage of using our code is that it helps set up the database with new csv files that may be coming. In the following weeks, as we proceed to clean our data and add columns necessary for our analysis, we can easily add them using SQL code and integrate it into a dataframe.
 
 A challenge we encounter when setting up the database was the addition of relationships between tables via PRIMARY and FOREIGN KEYS, as per our [schema](Schema.txt). This issue stems from limitations of both SQLite and the to_sql() method. Though doable through a workaround, it is a process that we deem not necessary for the time being, but we may come back to it if we feel we can gain an advantage from it.
+
+
+
+## Segment 2
+###### Google Slides
+https://docs.google.com/presentation/d/1VRICFz63dp378-NGYYzXR_Gvo7oOsKVnM7d9bCKS_gs/edit?usp=sharing
+### Tracks Tavern & Its dataset
+Tracks is a small business located in Milwaukee, Wisconsin currently owned by Michael Rebers
+Because it is a local neighborhood bar serving both drinks and foods Monday thru Wednesday, the data set primarily focus on the sales of food, drinks, and other items sold at the Tavern.
+We received the dataset directly from the client via a flash drive which includes their weekly data in both .csv and .xlsx format. The data contains sales from 2019 to 2021 on a weekly basis.
+We are using weather data from openweather.com to analysis the weather in the Milwaukee area, specifically 53212 zip code.
+
+### Why
+- A chance to work with local business and real world data
+- Providing an unique situation where we work with actual client and allow to gather business requirements and scope the project
+- Working with a realistic data set that requires primary exploration, cleaning, and standardization before exploration with machine learning and other analysis
+- A dataset that requirements further contextual knowledge challenging the importance of context in hand with content
+
+### Questions
+-Does the weather influence the sales?
+-What items can be best grouped together?
+-What does an average week look like at Tracks?
+-What items are sold best together?
+
+### Tracks Tavern Linear Regression Machine Learning Model
+-The purpose of this Machine Learning model is to explore if we can use the sales data since february 2019 and the weather information to predict sales information.
+-We will analyze the sales of different categories, compare with weather for the period and look for any correlations that can help us in our prediction.
+In using the value counts we determined the following main categories as the feature of our machine learning model:
+
+-Beer
+-Scotch/Whiskey
+-Side
+-Fish
+-Vodka
+-NonAlcoholic
+-Appetizers
+-Special
+We will create a column for each type grouping by date summarizing the quantity per date.
+Within in our model, we gathered historical weather data for the area where Tracks Tavern resides from openweather.com and cleaned and transform to reflect a weekly average weather.
+For our model we will be focusing on the average temp, minimum temp, and maximum temp.
+From the scatter plots, we do not see a correlation of any feature with the weather possibly due to Covid-19 closures or the weekly sales may impact the scaling for the weather data and dilute it.
+![download (2)](https://user-images.githubusercontent.com/82242081/136715093-e7addc6c-4563-41d6-9202-4054d715a846.png)
+The correlation graph in additions supports that there is no clear correlation between weather and sales data![download (1)](https://user-images.githubusercontent.com/82242081/136715103-127e0289-c0b2-4c68-bd89-063dbc16f7ab.png)
+From the bar graph we spot seasonally with sales declining in November, December and January. In addition, we clearly see a large spike in May just before summer begins.
+![download](https://user-images.githubusercontent.com/82242081/136715112-9903b968-c29f-404d-988b-59b5b42fc82c.png)
+
+### Grouping Products by Sales ML model
+This model is will be seeking what combination of products group best together.
+We are seeking to use the different types of food through Kmeans Clustering to see how best they work together.
+Types of food and drink may belong to multiple groups, however, individual products can only belong to one type.
+Items are scaled so that they will be weighed equally in the model.
+By using Kmeans, we can help understand how many clusterings there could possibly be.
+The Kmeans in addition will be quicker in predicting the amount of clusters rather than the use of hierarchical clustering.
+Once the cluseters are found and the types are grouped, the model can use revenue data to determine the most successful of the groups.
+After running our model and finding 2,499 groupings , we discover that the most successful group is that one composed by the types Fish, Burger, Beer, Hard Cider and Other. These are the most revenue-generating type of items, at an average of $13.57 per unit of product sold. These are our following top ten groupings:
+1. Fish, Burger, Beer, Hard Cider, Other
+6. Burger, Beer, Breakfast, Fish, Appetizers, Other
+2. Breakfast, Fish, Beer, Brandy, Hard Cider
+7. Breakfast, Fish, Beer, Brandy, Other
+3. Beer, Fish, Hard Cider, Breakfast, Brandy, Appetizers
+8. Fish, Other, Burger, Beer, Brandy
+4. Beer, Fish, Hard Cider, Scotch/Whiskey, Brandy
+9. Beer, Tequila, Fish, Hard Cider, Breakfast, Sandwich
+5. Burger, Fish, Scotch/Whiskey, Beer, Brandy
+10. Fish, Appetizers, Beer,  Burger, Brandy
