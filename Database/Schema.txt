@@ -1,0 +1,31 @@
+sales
+-
+item varchar
+item_code int
+quantity int
+unit_price float
+total_sales_amount float
+date date FK >- weather.dt
+Type varchar
+
+weather
+-
+dt date PK
+temp float
+feels_like float
+temp_min float
+temp_max float
+pressure float
+humidity float
+wind_speed float
+clouds_all float
+weather_main_Clear float
+weather_main_Clouds float
+weather_main_Drizzle float
+weather_main_Fog float
+weather_main_Haze float
+weather_main_Mist float
+weather_main_Rain float
+weather_main_Smoke float
+weather_main_Snow float
+weather_main_Thunderstorm float
