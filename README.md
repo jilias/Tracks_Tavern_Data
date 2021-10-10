@@ -97,24 +97,23 @@ We are using weather data from openweather.com to analysis the weather in the Mi
 - A dataset that requirements further contextual knowledge challenging the importance of context in hand with content
 
 ### Questions
--Does the weather influence the sales?
--What items can be best grouped together?
--What does an average week look like at Tracks?
--What items are sold best together?
+- Does the weather influence the sales?
+- What items can be best grouped together?
+- What does an average week look like at Tracks?
+- What items are sold best together?
 
 ### Tracks Tavern Linear Regression Machine Learning Model
--The purpose of this Machine Learning model is to explore if we can use the sales data since february 2019 and the weather information to predict sales information.
--We will analyze the sales of different categories, compare with weather for the period and look for any correlations that can help us in our prediction.
+The purpose of this Machine Learning model is to explore if we can use the sales data since february 2019 and the weather information to predict sales information. We will analyze the sales of different categories, compare with weather for the period and look for any correlations that can help us in our prediction.
 In using the value counts we determined the following main categories as the feature of our machine learning model:
 
--Beer
--Scotch/Whiskey
--Side
--Fish
--Vodka
--NonAlcoholic
--Appetizers
--Special
+- Beer
+- Scotch/Whiskey
+- Side
+- Fish
+- Vodka
+- NonAlcoholic
+- Appetizers
+- Special
 We will create a column for each type grouping by date summarizing the quantity per date.
 Within in our model, we gathered historical weather data for the area where Tracks Tavern resides from openweather.com and cleaned and transform to reflect a weekly average weather.
 For our model we will be focusing on the average temp, minimum temp, and maximum temp.
