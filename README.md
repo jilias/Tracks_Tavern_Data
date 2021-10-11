@@ -70,15 +70,18 @@ As we move forward with the data, we will have to continue refining the process 
 
 As a group, we decided the best system for us to use would be **SQLite**. This is because it has a great advantage in being both local and portable. It helps us to keep a copy of the database in our local repo so we may reference it as needed, and thanks to libraries like **SQLAlchemy** and **Pandas** we can simply make a connection to our database and make queries SQL-style if we need to pull specific data from it.
 
-In order to import our files from our current format (csv) to our database, we ran code as described in the [csvToSQLite](csvToSQLite.ipynb) file. We used the **sqlalchemy** library for python and the **to_sql()** method from Pandas. We saved our data on a [db file](data/sales.db), which for the time being contains two tables: 
+In order to import our files from our current format (csv) to our database, we ran code as described in the [csvToSQLite](processing/csvToSQLite.ipynb) file. We used the **sqlalchemy** library for python and the **to_sql()** method from Pandas. We saved our data on a [db file](Database/sales.db), which for the time being contains two tables: 
 
 - A concatenated sales data which holds the sales information of both food and drinks 
 - Our weather data, which holds the (weekly) historical weather information. 
 
 The file can be viewed in a SQLite browser such as DB Browser. An advantage of using our code is that it helps set up the database with new csv files that may be coming. In the following weeks, as we proceed to clean our data and add columns necessary for our analysis, we can easily add them using SQL code and integrate it into a dataframe.
 
-A challenge we encounter when setting up the database was the addition of relationships between tables via PRIMARY and FOREIGN KEYS, as per our [schema](Schema.txt). This issue stems from limitations of both SQLite and the to_sql() method. Though doable through a workaround, it is a process that we deem not necessary for the time being, but we may come back to it if we feel we can gain an advantage from it.
+A challenge we encounter when setting up the database was the addition of relationships between tables via PRIMARY and FOREIGN KEYS, as per our [schema](Database/Schema.txt). This issue stems from limitations of both SQLite and the to_sql() method. Though doable through a workaround, it is a process that we deem not necessary for the time being, but we may come back to it if we feel we can gain an advantage from it.
 
+###### ERD
+
+![ERD](imgs/ERD.png)
 
 
 ## Segment 2
