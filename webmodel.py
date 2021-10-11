@@ -1,5 +1,17 @@
 #Core pkgs
+from sqlalchemy import engine
 import streamlit as st
+
+#Databse pkgs
+import sqlite3
+# SQL Connection to Sales
+from sqlite3.dbapi2 import Date, connect
+import sqlalchemy as sql
+from sqlalchemy import create_engine
+#from conn import UserInput
+from sqlalchemy.orm import sessionmaker
+
+
 
 #EDA pkgs
 import pandas as pd
@@ -18,9 +30,21 @@ from sklearn.linear_model import LogisticRegression
 from sklearn import linear_model
 from sklearn.metrics import confusion_matrix, accuracy_score
 
-# SQL Connection to Sales
+quantity = st.sidebar.number_input("Enter a quantity number", min_value=0,max_value=500,step=1)
+submit = st.sidebar.button("SUBMIT")
 
-sales_data = pd.read_excel('Resources/tracks_tavern_sales_data.xlsx')
+if submit:
+    import sqlite3
+    conn = sqlite3.connect('Database/sales.db')
+    c = conn.cursor()
+    st.title("Extracting dataset from Database")
+    c.execute('SELECT * FROM sales')
+    sales_data = c.fetchall()
+    #sales_data = sales_data.columns.astype(str)
+
+else:
+    st.title("Extracting dataset from CSV files")
+    sales_data = pd.read_excel('Resources/tracks_tavern_sales_data.xlsx')
 
 def main():
     st.title('Welcome to Tavern Data')
@@ -39,15 +63,15 @@ def main():
     with columns[0]:
         #st.markdown(f"Quantity Number: {quantity}")
         st.header('Tavern Dataset')
-        st.dataframe(sales_data[0:10])
-        st.subheader('Total Count per Product Type')
-        st.write(sales_data.type.value_counts().head(10))
+        st.dataframe(sales_data)
+        #st.subheader('Total Count per Product Type')
+        #st.dataframe(sales_data.type.value_counts().head(10))
     with columns[1]:
         with dataset:
-            
+            #st.write(sales_data.head(20))
             sales_data['date'] = pd.to_datetime(sales_data['date'])
             main_types = ['beer', 'vodka', 'scotch/whiskey', 'nonalcoholic', 'side', 'appetizers', 'fish', 'special']
-
+            
             #Beer DF
             beer_df = sales_data[(sales_data.type == "beer" )].drop(columns=['item', 'item_code', 'unit_price','type', 'total_sales_amount'])
             beer_df = beer_df.groupby(['date']).sum().rename(columns={'quantity': 'beer_qty'})
@@ -79,7 +103,7 @@ def main():
             # special
             special_df = sales_data[(sales_data.type == 'special' )].drop(columns=['item', 'item_code', 'unit_price','type', 'total_sales_amount'])
             special_df = special_df.groupby(['date']).sum().rename(columns={'quantity': 'special_qty'})
-            
+                    
         #with features:
             # Join features DF
             feature_df = ((((((beer_df.join(vodka_df, how='outer')).join(scotch_df, how='outer'))\
