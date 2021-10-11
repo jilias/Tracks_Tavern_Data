@@ -109,7 +109,7 @@ def main():
             feature_df = ((((((beer_df.join(vodka_df, how='outer')).join(scotch_df, how='outer'))\
             .join(nonalcoholic_df, how = 'outer')).join(side_df, how='outer')).join(apps_df, how='outer'))\
                 .join(fish_df, how='outer')).join(special_df, how = 'outer')
-            #st.write(feature_df.head(10))
+            st.write(feature_df.head(10))
             #st.bar_chart(feature_df.head(500))
 
             # Read Weather DF
