@@ -12,7 +12,8 @@ CREATE TABLE "sales" (
     "unit_price" float   NOT NULL,
     "total_sales_amount" float   NOT NULL,
     "date" date   NOT NULL,
-    "Type" varchar   NOT NULL
+    "Type" varchar   NOT NULL,
+    FOREIGN KEY (date) REFERENCES weather(dt)  
 );
 
 CREATE TABLE "weather" (
