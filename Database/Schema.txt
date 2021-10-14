@@ -1,7 +1,8 @@
 sales
 -
+index int
 item varchar
-item_code int
+item_code int FK >- types.item_code
 quantity int
 unit_price float
 total_sales_amount float
@@ -10,6 +11,7 @@ Type varchar
 
 weather
 -
+index int
 dt date PK
 temp float
 feels_like float
@@ -29,3 +31,12 @@ weather_main_Rain float
 weather_main_Smoke float
 weather_main_Snow float
 weather_main_Thunderstorm float
+
+types
+-
+index int
+item_code int PK
+type varchar
+type_num int
+gen_num int
+general varchar
