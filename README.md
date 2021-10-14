@@ -109,8 +109,9 @@ As a group, we decided the best system for us to use would be **SQLite**. This i
 
 In order to import our files from our current format (csv) to our database, we ran a code as described in the [csvToSQLite](processing/csvToSQLite.ipynb) file. We used the **sqlalchemy** library for python and the **to_sql()** method from Pandas. We saved our data on a [db file](Database/sales.db), which for the time being contains two tables: 
 
-- A concatenated sales data which holds the sales information of both food and drinks 
+- A concatenated sales data which holds the sales information of both food and drinks.
 - Our weather data, which holds the (weekly) historical weather information. 
+- A type table with each individual product and what type of category each product falls into.
 
 The file can be viewed in a SQLite browser such as DB Browser. An advantage of using our code is that it helps set up the database with new csv files that may be coming. As we proceeded to clean our data and add columns necessary for our analysis, we can easily add them using SQL code and integrate it into a dataframe.
 
