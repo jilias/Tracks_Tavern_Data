@@ -8,6 +8,7 @@ import model
 import pandas as pd
 import numpy as np
 import datetime
+from pathlib import Path
 
 #Data Viz Pkgs
 import matplotlib.pyplot as plt
@@ -25,8 +26,22 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
+
+
+
 st.set_page_config(layout="wide") 
 
+# Dataframes and data transformation
+
+complete_df =  model.load_data()
+prediction_df = model.load_model()
+df = model.load_df()
+
+sales_df = complete_df.drop(['temp', 'temp_min', 'temp_max', 'month'], axis=1)
+
+
+
+# Header
 r1_1, r1_2 = st.columns((1,4))
 
 
@@ -45,26 +60,52 @@ with r1_2:
         "to view many different sports teams and games. In addition, they run volleyball leagues throughout the summer."
 )
 
+# Sidebar Selectors
 topic = ['About', 'Sales', 'Beer Predictor', 'Grouping']
-selector = st.selectbox('', topic)
+st.sidebar.title("Select topic")
+selector = st.sidebar.selectbox('', topic)
+st.sidebar.markdown('<br>',unsafe_allow_html=True )
+st.sidebar.image("./imgs/web_listing.jpg")
+
+# Functions for different options
+
+def read_markdown_file(markdown_file):
+    return Path(markdown_file).read_text()
+
+# ABOUT
 
 def about():
-    st.markdown("""""
-        Overview
-Tracks is a small business located in Milwaukee, Wisconsin currently owned by Michael Rebers. 7 days a week, they offer a variety of choice in both food and drinks while providing a place to view many different sports teams and games. In addition, they run volleyball leagues throughout the summer.
+    about_md = read_markdown_file("README.md")
+    st.markdown(about_md, unsafe_allow_html=True)
 
-Data Source
-Because it is a local neighborhood bar serving both drinks and foods Monday thru Wednesday, the data set primarily focus on the sales of food, drinks, and other items sold at the Tavern. We received the dataset directly from the client via a flash drive which includes their weekly data in both .csv and .xlsx format. The data contains sales from 2019 to 2021 on a weekly basis. In addition, we are using weather data from openweather.com to analysis the weather in the Milwaukee area, specifically 53212 zip code. We choose this particular data source and project for the following opportunities
-
-A chance to work with local business and real world data
-Providing an unique situation where we work with actual client and allow to gather business requirements and scope the project
-Working with a realistic data set that requires primary exploration, cleaning, and standardization before exploration with machine learning and other analysis
-A dataset that requirements further contextual knowledge challenging the importance of context in hand with content
-    """)
+# SALES
 
 def sales():
-    st.image("./imgs/pct_sales.jpg", width=600)
-    st.image("./imgs/weekly_sales_chart.jpg", width=600)
+    sr1_1, sr1_2, sr1_3 = st.columns(3)
+    
+    with sr1_1:
+        st.image("./imgs/weekly_sales_chart.jpg", width=600)
+    with sr1_2:
+        st.image("./imgs/weekly_licor_sales_chart.jpg", width=600)
+    with sr1_3:
+        st.markdown('## Sales Categories')
+        st.image("./imgs/pct_sales.jpg", width=600)
+    
+    sr2_1, sr2_2 = st.columns((2,8))
+
+    with sr2_1:
+        st.markdown('## Top Ten Item Types')
+        st.dataframe(df.type.value_counts().head(10))
+    
+    with sr2_2:
+        st.markdown('## Sales Quantities by Features')
+        salesbar = st.bar_chart(sales_df.sum(), width=5)
+
+    
+
+
+
+# BEER
 
 def beer_predictor():
     html_style = """
@@ -81,9 +122,6 @@ def beer_predictor():
         st.write(html_style,unsafe_allow_html=True)
 
 
-
-    complete_df =  model.load_data()
-    prediction_df = model.load_model()
 
     r3_1, r3_2 = st.columns((1,5))
 
@@ -141,6 +179,7 @@ def beer_predictor():
             st.metric(label="", value=int(predict))
 
    
+# Main functions
 
 def main():
     if selector == 'About':

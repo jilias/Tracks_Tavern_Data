@@ -7,6 +7,7 @@ import pickle as p
 data_path = './ML_Model/'
 data_file = 'sales.pkl'
 model_file = 'linear.pkl'
+df_file = 'df.pkl'
 
 def load_data():
     global df
@@ -18,6 +19,10 @@ def load_model():
     loaded_model = p.load(open(data_path+'linear.pkl','rb'))
     return loaded_model
 
+def load_df():
+    global sales
+    sales = p.load(open(data_path+'df.pkl','rb'))
+    return sales
 
 
 
