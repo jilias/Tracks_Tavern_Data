@@ -37,6 +37,37 @@ def load_revenue():
     loaded_revenue = p.load(open(data_path+'revenue.pkl','rb'))
     return loaded_revenue
 
+def score():
+    linear_regresion_df =  load_data()
 
+    X = linear_regresion_df.drop(['index','beer_qty', 'fish_qty', 'temp', 'temp_min', 'temp_max'], axis=1)
+    y = linear_regresion_df['beer_qty']
 
+    # Split the data into train and test 
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
+    # Create the linear regression model
+
+    from sklearn.linear_model import LinearRegression
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    score = model.score(X_train, y_train)
+    return score
+
+def model():
+    linear_regresion_df =  load_data()
+
+    X = linear_regresion_df.drop(['index','beer_qty', 'fish_qty', 'temp', 'temp_min', 'temp_max'], axis=1)
+    y = linear_regresion_df['beer_qty']
+
+    # Split the data into train and test 
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+    # Create the linear regression model
+
+    from sklearn.linear_model import LinearRegression
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    return model

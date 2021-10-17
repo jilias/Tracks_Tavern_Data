@@ -1,49 +1,36 @@
 #Core pkgs
-from numpy.core import numeric
-from scipy.sparse import data
 import streamlit as st
 import model
 
 #EDA pkgs
 import pandas as pd
-import numpy as np
-import datetime
 from pathlib import Path
 
 #Data Viz Pkgs
-import matplotlib.pyplot as plt
-import matplotlib
-matplotlib.use('Agg')
-import seaborn as sns
+import plotly.express as px
 
-#ML pkgs
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn import linear_model
-from sklearn.metrics import confusion_matrix, accuracy_score
-
-# importing stat functions
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-
-
-
-
+# Streamlit Page Configuration
 st.set_page_config(layout="wide") 
 
-# Dataframes and data transformation
+# Unpacking pickle files from model.py
 
 complete_df =  model.load_data()
 prediction_df = model.load_model()
 df = model.load_df()
 revenue_df = model.load_revenue()
 group_dict = model.load_group()
+score = model.score()
+model = model.model()
+
+format_score = "{:.4f}".format(score)
 
 
 
+# Sales DF
 sales_df = complete_df.drop(['temp', 'temp_min', 'temp_max', 'month'], axis=1)
 
-
+# Creating Group DF to load the treemap plot
+groups_df = pd.DataFrame.from_dict(group_dict, orient='index').sort_values([0, 1, 2, 3, 4, 5])
 
 # Header
 r1_1, r1_2 = st.columns((1,4))
@@ -95,12 +82,12 @@ def sales():
     sr1_1, sr1_2, sr1_3 = st.columns(3)
     
     with sr1_1:
-        st.image("./imgs/weekly_sales_chart.jpg", width=600)
+        st.image("./imgs/weekly_sales_chart.jpg", use_column_width=True)
     with sr1_2:
-        st.image("./imgs/weekly_licor_sales_chart.jpg", width=600)
+        st.image("./imgs/weekly_licor_sales_chart.jpg", use_column_width=True)
     with sr1_3:
         st.markdown('## Sales Categories')
-        st.image("./imgs/pct_sales.jpg", width=600)
+        st.image("./imgs/pct_sales.jpg", use_column_width=True)
     
     sr2_1, sr2_2 = st.columns((2,8))
 
@@ -110,10 +97,7 @@ def sales():
     
     with sr2_2:
         st.markdown('## Sales Quantities by Features')
-        salesbar = st.bar_chart(sales_df.sum(), width=5)
-
-    
-
+        salesbar = st.bar_chart(sales_df.sum(), width=50)
 
 
 # BEER
@@ -148,7 +132,7 @@ def beer_predictor():
             Using the scatter plots below, we determine which feature presents correlation with each other.
             The Features that present correlation will be use for our Machine Learning Model.
             """)
-            st.image("./imgs/pairgrid.jpg", width=800)
+            st.image("./imgs/pairgrid.jpg", use_column_width=True)
 
             
 
@@ -163,20 +147,21 @@ def beer_predictor():
         elif analysis == 'Beer Sales By Month':
             st.subheader(analysis)
             st.markdown('The sales by month column is used to see if there is any seasonality that can help our model')
-            st.image("./imgs/barplot.jpg", width=600)
+            st.image("./imgs/barplot.jpg", wuse_column_width=True)
         
         elif analysis == 'Correlation Heatmap':
             st.subheader(analysis)
             st.markdown("""
             The heatmap is another way to visualize the corralation between features.
             """)
-            st.image("./imgs/heatmap.jpg", width=600)
+            st.image("./imgs/heatmap.jpg", use_column_width=True)
 
         elif analysis == 'Predict Beer Sales Qty':
             st.subheader(analysis)
             st.markdown("""
             Enter weekly sales value for each feature
             """)
+            # User Value Inputs
             vodka_qty = st.number_input('Vodka', value=380, min_value=1, max_value=None)
             scotch_qty = st.number_input('Scotch', value=212, min_value=1, max_value=None)
             nonalcoholic_qty = st.number_input('NonAlcoholic', value=88, min_value=1, max_value=None)
@@ -184,10 +169,20 @@ def beer_predictor():
             apps_qty = st.number_input('Appetizer', value=137, min_value=1, max_value=None)
             special_qty = st.number_input('Special', value=68, min_value=1, max_value=None)
             month = st.number_input('Month', value=5, min_value=1, max_value=12) 
-            predict = 60.23 + vodka_qty * 0.19331991 + scotch_qty * 0.60362646 + nonalcoholic_qty * 1.37073889 + side_qty * 1.73370093 + apps_qty * 0.51365566 + special_qty * 0.5456311 - month * 5.06256333
+
+            # Dataframe with user inputs
+            user_input = pd.DataFrame({'vodka_qty':[vodka_qty],'scotch_qty':[scotch_qty],'nonalcoholic_qty':[nonalcoholic_qty],
+            'side_qty':[side_qty],'apps_qty':[apps_qty],'special_qty':[special_qty],'month':[month]})
+
+            # Use user inputs to predict beer quantity sales
+
+            predict = model.predict(user_input)
             st.markdown("""
             #  Predicted Weekly Beer Sales Quantity:""")
             st.metric(label="", value=int(predict))
+            st.markdown("""
+            #  The Model's score used in this prediction is:""")
+            st.metric(label="", value=float(format_score))
 
 # Pairing Function
 
@@ -197,6 +192,9 @@ def pairing():
             Using unsupervised learning and kmeans to create clusters or gropus of drinks and foods items,
             the model can recommend the most sucessful groups or pairing in terms of revenue for a selected food or drink type.
             """)
+
+    
+
     choice_type = st.selectbox("Enter type of Product:", ["Vodka","Scotch/Whiskey","Appetizers","Sandwich","Rum","Fish","Burger","NonAlcoholic","Side","Tequila","Bourbon","Breakfast","Liqueur","Brandy","Cocktail","Hard Seltzer","Wine","Entree","Gin","Hard Cider","Special","Salad","Happy Hour","Other","Specialty Shots","NO TYPE"])
     def recommend(type_):
         top_groups = revenue_df.sort_values("revenue_per_unit", axis=0, ascending=False)
@@ -228,8 +226,12 @@ def pairing():
         group = recommend([choice_type]) 
         st.markdown("We recommend group: ")
         st.markdown(group)
+    st.subheader("Plotly Treemap for most revenue generating pairing")
+    fig = px.treemap(groups_df, path=[0, 1, 2, 3, 4])
+    fig.update_traces(root_color="lightgrey")
+    st.plotly_chart(fig, use_container_width=True)
 
-
+        
 
 # Main functions
 
