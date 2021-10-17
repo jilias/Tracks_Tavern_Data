@@ -36,8 +36,9 @@ st.set_page_config(layout="wide")
 complete_df =  model.load_data()
 prediction_df = model.load_model()
 df = model.load_df()
-# add revenue pickle
-# group pickle
+revenue_df = model.load_revenue()
+group_dict = model.load_group()
+
 
 
 sales_df = complete_df.drop(['temp', 'temp_min', 'temp_max', 'month'], axis=1)
@@ -189,7 +190,46 @@ def beer_predictor():
             st.metric(label="", value=int(predict))
 
 # Pairing Function
-   
+
+def pairing():
+    st.subheader("Pairing")
+    st.markdown("""
+            Using unsupervised learning and kmeans to create clusters or gropus of drinks and foods items,
+            the model can recommend the most sucessful groups or pairing in terms of revenue for a selected food or drink type.
+            """)
+    choice_type = st.selectbox("Enter type of Product:", ["Vodka","Scotch/Whiskey","Appetizers","Sandwich","Rum","Fish","Burger","NonAlcoholic","Side","Tequila","Bourbon","Breakfast","Liqueur","Brandy","Cocktail","Hard Seltzer","Wine","Entree","Gin","Hard Cider","Special","Salad","Happy Hour","Other","Specialty Shots","NO TYPE"])
+    def recommend(type_):
+        top_groups = revenue_df.sort_values("revenue_per_unit", axis=0, ascending=False)
+        groups_with_element = []
+        
+        #we look for every group that has it
+        for key in group_dict:
+            #if the elements in the recommended group is true
+            if all(x in group_dict[key] for x in type_):
+                groups_with_element.append(key)
+                
+        if len(groups_with_element) == 0:
+            return print("We do not have recommendations for you")
+            
+        win_key = groups_with_element[0]
+        win_rev_0 = top_groups['revenue_per_unit'][win_key] #old revenue
+        for key in groups_with_element:
+            win_rev_1 = top_groups['revenue_per_unit'][key] #new revenue
+            #if the new revenue is bigger than the old revenue
+            if win_rev_1 > win_rev_0:
+                #that key becomes the new win key
+                win_key = key
+                #and its revenue becomes old revenue
+                win_rev_0 = win_rev_1
+        recommend_list = group_dict[win_key]
+        return recommend_list
+
+    if st.button('Recommendation'):
+        group = recommend([choice_type]) 
+        st.markdown("We recommend group: ")
+        st.markdown(group)
+
+
 
 # Main functions
 
@@ -201,7 +241,7 @@ def main():
     elif selector == 'Beer Predictor':
         beer_predictor()
     elif selector == 'Pairing':
-        st.write('TEST')
+        pairing()
 
 
 
