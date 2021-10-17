@@ -10,7 +10,7 @@ Because it is a local neighborhood bar serving both drinks and foods Monday thru
 - A dataset that requires further contextual knowledge challenging the importance of context in hand with content
 
 ## Questions/Scope
-As a team we decided to incorporate the weather data to see what liquors and food sold best and in which season. We will further analyze the data to see how the liquors and food sales correlate with one another. As our data model, we are looking to use linear regression, unsupervised machine learning, and Facebook Prophet.
+As a team we decided to incorporate the weather data to see what liquors and food sold best and in which season. We will further analyze the data to see how the liquors and food sales correlate with one another. As our data model, we are looking to use linear regression and unsupervised machine learning.
 - Does the weather influence the sales?
 - What items can be best grouped together?
 - What does an average week look like at Tracks?
@@ -121,11 +121,13 @@ A challenge we encountered when setting up the database was the addition of rela
 
 ![ERD](imgs/ERD.png)
 
-## Final Analysis
-While we had hoped to see a stronger correlation between weather and sales, we take notice that in the month of May contains higher spikes in sales which can be influenced with the start of their volleyball league. In addition, we do see a November and December with less than sales. We also found the predictions for beer quantity below 800, seems to be very closely match, with little discrepancy, however, when sales go over 800 the model seems to break. Since between March 2020 and July 2020, we know that Tracks Tavern was shut down due the Pandemic which in turn greatly influences the data as seen with our beer model below.
-![download (4)](https://user-images.githubusercontent.com/82242081/137595881-d00b2827-81d8-4b37-b41d-5674c35d656b.png)
-With the pandemic, we found that using the unsupervised machine learning models to predict future sales were problematic. In addition, we discovered large outliers in the data that coincided with the NBA finals and subsequently the Buck's victory.
+## Final Analysis & Thoughts
+As we worked through the data, we found it was best not to use Facebook Prophet as it did not work best in our explorations. As we moved forward with our data, we found that using the pickle library worked well in condensing and saving our model and images for the web app in order to run effeciently. As for our groups, we found with aid of plotly express were able to reach our best possible results.
+While we had hoped to see a stronger correlation between weather and sales, we take notice that in the month of May contains higher spikes in sales which can be influenced with the start of their volleyball league. Since there sales in liquor is higher than their sales in food, we can see that revenue depends more on their beer sales and chose to focuses our interactive app in that matter. In addition, we do see a November and December with less than sales. We also found the predictions for beer quantity below 800, seems to be very closely match, with little discrepancy, however, when sales go over 800 the model seems to break. Since between March 2020 and July 2020, we know that Tracks Tavern was shut down due the Pandemic which in turn greatly influences the data as seen with our beer model below.
 
+![download (4)](https://user-images.githubusercontent.com/82242081/137595881-d00b2827-81d8-4b37-b41d-5674c35d656b.png)
+
+With the pandemic, we found that using the unsupervised machine learning models to predict future sales were problematic. In addition, we discovered large outliers in the data that coincided with the NBA finals and subsequently the Buck's victory. What we do see is an effective business with a cyclical pattern in revenue as per our monthly average chart, where the locals will drink no matter the weather and enjoy a fish fry or two.
 ## Dashboard
 
 https://github.com/jilias/Tracks_Tavern_Data/blob/main/webmodel.py
