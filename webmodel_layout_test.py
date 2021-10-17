@@ -36,6 +36,9 @@ st.set_page_config(layout="wide")
 complete_df =  model.load_data()
 prediction_df = model.load_model()
 df = model.load_df()
+# add revenue pickle
+# group pickle
+
 
 sales_df = complete_df.drop(['temp', 'temp_min', 'temp_max', 'month'], axis=1)
 
@@ -61,11 +64,18 @@ with r1_2:
 )
 
 # Sidebar Selectors
-topic = ['About', 'Sales', 'Beer Predictor', 'Grouping']
+topic = ['About', 'Sales', 'Beer Predictor', 'Pairing']
 st.sidebar.title("Select topic")
 selector = st.sidebar.selectbox('', topic)
 st.sidebar.markdown('<br>',unsafe_allow_html=True )
 st.sidebar.image("./imgs/web_listing.jpg")
+st.sidebar.write("Meet the team:")
+st.sidebar.markdown("""
+    - Aimerica Mangilit
+    - George Calvo
+    - Jess Ilias
+    - Jose Alcivar
+    """)
 
 # Functions for different options
 
@@ -137,7 +147,7 @@ def beer_predictor():
             Using the scatter plots below, we determine which feature presents correlation with each other.
             The Features that present correlation will be use for our Machine Learning Model.
             """)
-            st.image("./imgs/pairgrid.jpg", width=600)
+            st.image("./imgs/pairgrid.jpg", width=800)
 
             
 
@@ -178,7 +188,9 @@ def beer_predictor():
             #  Predicted Weekly Beer Sales Quantity:""")
             st.metric(label="", value=int(predict))
 
+# Pairing Function
    
+
 # Main functions
 
 def main():
@@ -188,7 +200,7 @@ def main():
         sales()
     elif selector == 'Beer Predictor':
         beer_predictor()
-    elif selector == 'Grouping':
+    elif selector == 'Pairing':
         st.write('TEST')
 
 
