@@ -1,5 +1,7 @@
 #Core pkgs
+from numpy.core import numeric
 import streamlit as st
+import model
 
 #EDA pkgs
 import pandas as pd
@@ -18,117 +20,167 @@ from sklearn.linear_model import LogisticRegression
 from sklearn import linear_model
 from sklearn.metrics import confusion_matrix, accuracy_score
 
-# SQL Connection to Sales
+# importing stat functions
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
 
-sales_data = pd.read_excel('Resources/tracks_tavern_sales_data.xlsx')
+st.image("./imgs/logo.jpg", use_column_width=False)
+html_style = """
+<div style = "background-color:dark">
+<h2 style = "color:white;text-align:center;">Welcome to Tracks and Tavern Grille </h3>
+</div>
+"""
+st.write(html_style,unsafe_allow_html=True)
+complete_df =  model.load_data()
+prediction_df = model.load_model()
+revenue_df = model.load_revenue()
+group_dict = model.load_group()
+type_df = model.load_type()
 
 def main():
+   
     st.title('Welcome to Tavern Data')
-    st.text("Using Streamlit")
-
-    #product = ['beer', 'vodka', 'scotch/whiskey', 'nonalcoholic', 'side', 'appetizers', 'fish', 'special']
-    map = ['pairplot', 'lmplot', 'barplot', 'heatmap']
-    choice = st.sidebar.selectbox('Select Map to explore',map)
-    #quantity = st.sidebar.number_input("Enter a number value", min_value=0,max_value=500,step=1)
+    columns = st.columns((2,2,2))
+    with columns[0]:
+        about = st.button("About")
+    with columns[1]:
+        data = st.button("Data")
+    with columns[2]:
+        ml = st.button("Model")
 
     dataset = st.container()
-    features = st.container()
     model_training = st.container()
+    stats = st.container()
 
-    columns = st.columns((1,1))
-    with columns[0]:
-        #st.markdown(f"Quantity Number: {quantity}")
-        st.header('Tavern Dataset')
-        st.dataframe(sales_data[0:10])
-        st.subheader('Total Count per Product Type')
-        st.write(sales_data.type.value_counts().head(10))
-    with columns[1]:
-        with dataset:
+    #if about:
+    #st.header('About Tavern')
+    #if data:
+    with dataset:
+        st.dataframe(complete_df)
+    #if ml:
+    with model_training:
+        st.subheader('Tracks Tavern Linear Regression Machine Learning Model')
+
+        st.markdown("""
+        The purpose of this Machine Learning model is to explore if we can use the **sales data** since february 2019 and the **weather information** to predict sales information. 
+        We will analyze the sales of different categories, compare with weather for the period and look for any correlations that can help us in our prediction.
+        """)
+        st.markdown('Combination of sales dataset and weather dataset')
+        st.dataframe(complete_df)
+
+        #Pairplot
+        if st.button('Intercorrelation Pairplot'):
+            fig_pair = sns.pairplot(complete_df)
+            st.pyplot(fig_pair)
             
-            sales_data['date'] = pd.to_datetime(sales_data['date'])
-            main_types = ['beer', 'vodka', 'scotch/whiskey', 'nonalcoholic', 'side', 'appetizers', 'fish', 'special']
-
-            #Beer DF
-            beer_df = sales_data[(sales_data.type == "beer" )].drop(columns=['item', 'item_code', 'unit_price','type', 'total_sales_amount'])
-            beer_df = beer_df.groupby(['date']).sum().rename(columns={'quantity': 'beer_qty'})
-
-            #Vodka DF
-            vodka_df = sales_data[(sales_data.type == "vodka" )].drop(columns=['item', 'item_code', 'unit_price','type', 'total_sales_amount'])
-            vodka_df = vodka_df.groupby(['date']).sum().rename(columns={'quantity': 'vodka_qty'})
-
-            #Scotch Whiskey DF
-            scotch_df = sales_data[(sales_data.type == 'scotch/whiskey' )].drop(columns=['item', 'item_code', 'unit_price','type', 'total_sales_amount'])
-            scotch_df= scotch_df.groupby(['date']).sum().rename(columns={'quantity': 'scotch_qty'})
-
-            # nonalcoholic DF
-            nonalcoholic_df = sales_data[(sales_data.type == 'nonalcoholic' )].drop(columns=['item', 'item_code', 'unit_price','type', 'total_sales_amount'])
-            nonalcoholic_df = nonalcoholic_df.groupby(['date']).sum().rename(columns={'quantity': 'nonalcoholic_qty'})
-
-            # side
-            side_df = sales_data[(sales_data.type == 'side' )].drop(columns=['item', 'item_code', 'unit_price','type', 'total_sales_amount'])
-            side_df = side_df.groupby(['date']).sum().rename(columns={'quantity': 'side_qty'})
-
-            # appetizers
-            apps_df = sales_data[(sales_data.type == 'appetizers' )].drop(columns=['item', 'item_code', 'unit_price','type', 'total_sales_amount'])
-            apps_df = apps_df.groupby(['date']).sum().rename(columns={'quantity': 'apps_qty'})
-
-            # fish
-            fish_df = sales_data[(sales_data.type == 'fish' )].drop(columns=['item', 'item_code', 'unit_price','type', 'total_sales_amount'])
-            fish_df = fish_df.groupby(['date']).sum().rename(columns={'quantity': 'fish_qty'})
-
-            # special
-            special_df = sales_data[(sales_data.type == 'special' )].drop(columns=['item', 'item_code', 'unit_price','type', 'total_sales_amount'])
-            special_df = special_df.groupby(['date']).sum().rename(columns={'quantity': 'special_qty'})
+        if st.button('Intercorrelation Lmplot'):
+            st.subheader('Variable correlation')
+            st.markdown("""
+            From the scatter plots above, we do not see a correlation of any feature with the weather, this might be because our data is affected by covid 19 closures and/or that since our data is for weekly sales, any weather impact on sales can be diluted. 
+            Nonetheless, since we spot corralations with the weather, for our model we will drop the temperature columns.
+            Below with a table with the corralation values corrabolating the fact that there is no corralation between our sales data and the weather.
+            """)
+            st.dataframe(complete_df.corr())
+            fig_lm = sns.lmplot(x='beer_qty', y='apps_qty', data=complete_df, size=5)
+            st.pyplot(fig_lm)
             
-        #with features:
-            # Join features DF
-            feature_df = ((((((beer_df.join(vodka_df, how='outer')).join(scotch_df, how='outer'))\
-            .join(nonalcoholic_df, how = 'outer')).join(side_df, how='outer')).join(apps_df, how='outer'))\
-                .join(fish_df, how='outer')).join(special_df, how = 'outer')
-            #st.write(feature_df.head(10))
-            #st.bar_chart(feature_df.head(500))
+        if st.button('Intercorrelation Boxplot'):
+            st.markdown('We will create a month column and use it to see if there is any seasonality that can help our model')
+            st.subheader('Visualize beer sales by month')
+            complete_df['month'] = complete_df['index'].apply(lambda time: time.month)
+            f,ax = plt.subplots(figsize=(15,10))
+            #ax.figure.savefig('file.png')
+            st.write(sns.boxplot(x='month', y='apps_qty', data=complete_df))
+            st.set_option('deprecation.showPyplotGlobalUse', False)
+            st.pyplot()
+            
+        if st.button('Intercorrelation Heatmap'):
+            st.subheader('Correlation heatmap')
+            corr = complete_df.corr()
+            cmap = sns.diverging_palette(220,10, as_cmap=True)
+            f, ax = plt.subplots(figsize=(11,9))
+            ax.figure.savefig('file.png')
+            st.write(sns.heatmap(corr, cmap=cmap, center=0, square=True, linewidths=0.5))
+            st.set_option('deprecation.showPyplotGlobalUse', False)
+            st.pyplot()
+    with stats:
+        # Creating our feature dateframe as X and our dependant df as y ('scotch_qty')
+        def user_input():
+            vodka_qty = st.sidebar.number_input('Vodka' )
+            scotch_qty = st.sidebar.number_input('Scotch')
+            nonalcoholic_qty = st.sidebar.number_input('NonAlcoholic')
+            side_qty = st.sidebar.number_input('Side')
+            apps_qty = st.sidebar.number_input('Appetizer')
+            special_qty = st.sidebar.number_input('Special')
+            month = st.sidebar.number_input('Month')
 
-            # Read Weather DF
-            cols = ['dt','temp', 'temp_min', 'temp_max']
-            weather_df = pd.read_csv('Resources/week_weather_summary.csv', index_col=['dt'], usecols=cols)
-            weather_df.index = pd.to_datetime(weather_df.index)
-            complete_df = feature_df.join(weather_df, how='outer').reset_index()
-            complete_df.dropna(inplace=True)
 
-            st.markdown(f"Map Name: {choice}")
-            if (choice == 'pairplot'):
-                st.subheader('Variable correlation')
-                st.dataframe(complete_df.corr())
-                fig_pair = sns.pairplot(complete_df)
-                st.pyplot(fig_pair)
-            elif(choice == 'lmplot'):
-                fig_lm = sns.lmplot(x='beer_qty', y='apps_qty', data=complete_df, size=5)
-                st.pyplot(fig_lm)
-            elif(choice == 'barplot'):
-                st.subheader('Visualize beer sales by month')
-                complete_df['month'] = complete_df['index'].apply(lambda time: time.month)
-                f,ax = plt.subplots(figsize=(15,10))
-                ax.figure.savefig('file.png')
-                st.write(sns.boxplot(x='month', y='apps_qty', data=complete_df))
-                st.set_option('deprecation.showPyplotGlobalUse', False)
-                st.pyplot()
-            elif(choice == 'heatmap'):
-                st.subheader('Correlation heatmap')
-                corr = complete_df.corr()
-                cmap = sns.diverging_palette(220,10, as_cmap=True)
-                f, ax = plt.subplots(figsize=(11,9))
-                ax.figure.savefig('file.png')
-                st.write(sns.heatmap(corr, cmap=cmap, center=0, square=True, linewidths=0.5))
-                st.set_option('deprecation.showPyplotGlobalUse', False)
-                st.pyplot()
-          
-
-           
-        #date = st.sidebar.date_input('Date', datetime.date(2019,1,1))
+            data = {'vodka_qty': vodka_qty,
+                    'scotch_qty': scotch_qty,
+                    'nonalcoholic_qty': nonalcoholic_qty,
+                    'side_qty': side_qty,
+                    'apps_qty': apps_qty,
+                    'special_qty': special_qty,
+                    'month': month}
+            features = pd.DataFrame(data, index=[0])
+            return features
         
-        with model_training:
-            def seasonality():
-                st.bar_chart(beer_df.groupby(['date']).sum().rename(columns={'quantity': 'beer_qty'}))
+        ### Prediction Calculation
+        coef  = { 0.19331991,0.60362646,  1.37073889,  1.73370093,  0.51365566,
+        0.5456311 , -5.06256333 }
+            
+        df = user_input()
+        X = df
+        y = complete_df['beer_qty']
+
+        st.subheader('User Input parameters')
+        st.write(df)
+
+        choice_type = st.selectbox("Enter type of Product:", ["Vodka","Scotch/Whiskey","Appetizers","Sandwich","Rum","Fish","Burger","NonAlcoholic","Side","Tequila","Bourbon","Breakfast","Liqueur","Brandy","Cocktail","Hard Seltzer","Wine","Entree","Gin","Hard Cider","Special","Salad","Happy Hour","Other","Specialty Shots","NO TYPE"])
+        def recommend(type_):
+            top_groups = revenue_df.sort_values("revenue_per_unit", axis=0, ascending=False)
+            groups_with_element = []
+            
+            #we look for every group that has it
+            for key in group_dict:
+                #if the elements in the recommended group is true
+                if all(x in group_dict[key] for x in type_):
+                    groups_with_element.append(key)
+                    
+            if len(groups_with_element) == 0:
+                return print("We do not have recommendations for you")
+                
+            win_key = groups_with_element[0]
+            win_rev_0 = top_groups['revenue_per_unit'][win_key] #old revenue
+            for key in groups_with_element:
+                win_rev_1 = top_groups['revenue_per_unit'][key] #new revenue
+                #if the new revenue is bigger than the old revenue
+                if win_rev_1 > win_rev_0:
+                    #that key becomes the new win key
+                    win_key = key
+                    #and its revenue becomes old revenue
+                    win_rev_0 = win_rev_1
+            recommend_list = group_dict[win_key]
+            return recommend_list
+            
+        
+        # Creating a Prediction DF to compare out test y with our predicted y.
+        if st.button('Prediction'):
+           
+           #prediction_df['y_pred'] = model.predict(df)
+           predict = 60.23 + df['vodka_qty'] * 0.19 + df['scotch_qty'] * 0.60 + df['nonalcoholic_qty'] * 1.37 + df['side_qty'] * 1.73 + df['apps_qty'] * 0.51 + df['special_qty'] * 0.54 - df['month'] * 5.06
+           st.write(predict)
+           st.markdown("""
+            From the scatter plots above, we do not see a correlation of any feature with the weather, this might be because our data is affected by covid 19 closures and/or that since our data is for weekly sales, any weather impact on sales can be diluted. 
+            Nonetheless, since we spot corralations with the weather {predict}, for our model we will drop the temperature columns.
+            Below with a table with the corralation values corrabolating the fact that there is no corralation between our sales data and the weather.
+            """)
+        
+        if st.button('Recommendation'):
+            group = recommend([choice_type]) 
+            st.markdown("We recommend group: ")
+            st.markdown(group)
 
 if __name__ == "__main__":
     main()
+    

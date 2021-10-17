@@ -128,7 +128,6 @@ While we had hoped to see a stronger correlation between weather and sales, we t
 ![download (4)](https://user-images.githubusercontent.com/82242081/137595881-d00b2827-81d8-4b37-b41d-5674c35d656b.png)
 
 With the pandemic, we found that using the unsupervised machine learning models to predict future sales were problematic. In addition, we discovered large outliers in the data that coincided with the NBA finals and subsequently the Buck's victory. What we do see is an effective business with a cyclical pattern in revenue as per our monthly average chart, where the locals will drink no matter the weather and enjoy a fish fry or two.
-
 ## Dashboard
 
 https://github.com/jilias/Tracks_Tavern_Data/blob/main/webmodel.py

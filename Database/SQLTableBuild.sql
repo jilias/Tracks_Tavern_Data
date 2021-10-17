@@ -3,6 +3,7 @@
 
 DROP TABLE "sales";
 DROP TABLE "weather";
+DROP TABLE "types";
 
 CREATE TABLE "sales" (
 	"index" int not null,
@@ -12,7 +13,9 @@ CREATE TABLE "sales" (
     "unit_price" float   NOT NULL,
     "total_sales_amount" float   NOT NULL,
     "date" date   NOT NULL,
-    "Type" varchar   NOT NULL
+    "Type" varchar   NOT NULL,
+    FOREIGN KEY (date) REFERENCES weather(dt),
+    FOREIGN KEY (item_code) REFERENCES types(item_code)  
 );
 
 CREATE TABLE "weather" (
@@ -36,4 +39,13 @@ CREATE TABLE "weather" (
     "weather_main_Smoke" float   NOT NULL,
     "weather_main_Snow" float   NOT NULL,
 	"weather_main_Thunderstorm" float NOT NULL
+);
+
+CREATE TABLE "types" (
+	"index" int not null,
+    "item_code" int PRIMARY KEY,
+    "type" varchar   NOT NULL,
+    "type_num" int   NOT NULL,
+    "gen_num" int   NOT NULL,
+    "general" varchar   NOT NULL
 );
