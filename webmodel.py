@@ -33,6 +33,10 @@ html_style = """
 st.write(html_style,unsafe_allow_html=True)
 complete_df =  model.load_data()
 prediction_df = model.load_model()
+revenue_df = model.load_revenue()
+group_dict = model.load_group()
+type_df = model.load_type()
+
 def main():
    
     st.title('Welcome to Tavern Data')
@@ -120,18 +124,45 @@ def main():
                     'month': month}
             features = pd.DataFrame(data, index=[0])
             return features
-        coef  = { 0.19331991,        0.60362646,  1.37073889,  1.73370093,  0.51365566,
+        
+        ### Prediction Calculation
+        coef  = { 0.19331991,0.60362646,  1.37073889,  1.73370093,  0.51365566,
         0.5456311 , -5.06256333 }
             
         df = user_input()
+        X = df
+        y = complete_df['beer_qty']
 
         st.subheader('User Input parameters')
         st.write(df)
 
-        beer = {'beer_qty': st.sidebar.slider('Beer', 1,15,7)}
-        
-        X = df
-        y = complete_df['beer_qty']
+        choice_type = st.selectbox("Enter type of Product:", ["Vodka","Scotch/Whiskey","Appetizers","Sandwich","Rum","Fish","Burger","NonAlcoholic","Side","Tequila","Bourbon","Breakfast","Liqueur","Brandy","Cocktail","Hard Seltzer","Wine","Entree","Gin","Hard Cider","Special","Salad","Happy Hour","Other","Specialty Shots","NO TYPE"])
+        def recommend(type_):
+            top_groups = revenue_df.sort_values("revenue_per_unit", axis=0, ascending=False)
+            groups_with_element = []
+            
+            #we look for every group that has it
+            for key in group_dict:
+                #if the elements in the recommended group is true
+                if all(x in group_dict[key] for x in type_):
+                    groups_with_element.append(key)
+                    
+            if len(groups_with_element) == 0:
+                return print("We do not have recommendations for you")
+                
+            win_key = groups_with_element[0]
+            win_rev_0 = top_groups['revenue_per_unit'][win_key] #old revenue
+            for key in groups_with_element:
+                win_rev_1 = top_groups['revenue_per_unit'][key] #new revenue
+                #if the new revenue is bigger than the old revenue
+                if win_rev_1 > win_rev_0:
+                    #that key becomes the new win key
+                    win_key = key
+                    #and its revenue becomes old revenue
+                    win_rev_0 = win_rev_1
+            recommend_list = group_dict[win_key]
+            return recommend_list
+            
         
         # Creating a Prediction DF to compare out test y with our predicted y.
         if st.button('Prediction'):
@@ -144,13 +175,12 @@ def main():
             Nonetheless, since we spot corralations with the weather {predict}, for our model we will drop the temperature columns.
             Below with a table with the corralation values corrabolating the fact that there is no corralation between our sales data and the weather.
             """)
-           
-           
-
-
-
-
-        #date = st.sidebar.date_input('Date', datetime.date(2019,1,1))
+        
+        if st.button('Recommendation'):
+            group = recommend([choice_type]) 
+            st.markdown("We recommend group: ")
+            st.markdown(group)
 
 if __name__ == "__main__":
     main()
+    
