@@ -4,11 +4,6 @@ pathlib
 Path
 plotly.express
 numpy
-matplotlib.pyplot
 matplotlib
 seaborn
-train_test_split
-LogisticRegression
-linear_model
-confusion_matrix
-accuracy_score
+sklearn
