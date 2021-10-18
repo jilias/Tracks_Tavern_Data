@@ -10,7 +10,6 @@ model_file = 'linear.pkl'
 df_file = 'df.pkl'
 group_file = 'group_dict.pkl'
 revenue_file = 'revenue.pkl'
-type_file = 'individual_type.pkl'
 
 
 def load_data():
