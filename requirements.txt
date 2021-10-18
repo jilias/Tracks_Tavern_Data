@@ -6,8 +6,4 @@ plotly.express
 numpy
 matplotlib
 seaborn
-train_test_split
-LogisticRegression
-linear_model
-confusion_matrix
-accuracy_score
+sklearn
