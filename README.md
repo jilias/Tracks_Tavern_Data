@@ -131,7 +131,7 @@ With the pandemic, we found that using the unsupervised machine learning models 
 In the future exploration of the data, we  hoped to gather daily breakdowns of revenue to see if the weather data would correlate and possibly see if there is data on Track's volleyball league and its influence with other datasets. Through all these explorations we, as a team, found this dataset sufficiently challenging and gathered all our skills from this course to venture and analyze a real world project. We would like to thank Michael Rebers in providing this oppurtunity for us and sharing his data for furthering our education.
 ## Dashboard
 
-https://github.com/jilias/Tracks_Tavern_Data/blob/main/webmodel.py
+https://tracks-tavern.herokuapp.com/
 
 ## Presentation
 https://docs.google.com/presentation/d/1VRICFz63dp378-NGYYzXR_Gvo7oOsKVnM7d9bCKS_gs/edit?usp=sharing
