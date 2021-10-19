@@ -1,6 +1,25 @@
 # Tracks Tavern Data
+
+### Table of Contents
+
+- [Overview](#overv)
+- [Data Source](#DataSource)
+- [Questions/Scope](#Questions)
+- [Team](#Team)
+- [Pre-Exploration](#preexploration)
+- [Database](#datab)
+- [Machine Learning](#MachineLearning)
+  - [Linear Regression Model](#MLSupervised)
+  - [Grouping Model](#MLUnsupervised)
+- [Final Analysis and Thoughts](#finalAnalysis)
+- [Dashboard and Presentation](#DashboardnPresentation)  
+
+<a name='overv'/>
+
 ## Overview
 Tracks is a small business located in Milwaukee, Wisconsin currently owned by Michael Rebers. 7 days a week, they offer a variety of choices in both food and drinks while providing a place to view many different sports teams and games. In addition, they run volleyball leagues throughout the summer.
+
+<a name='DataSource'/>
 
 ## Data Source
 Because it is a local neighborhood bar serving both drinks and foods Monday thru Sunday, the data set primarily focuses on the sales of food, drinks, and other items sold at the Tavern. We received the dataset directly from the client via a flash drive which includes their weekly data in both .csv and .xlsx format. The data contains sales from 2019 to 2021 on a weekly basis. In addition, we are using weather data from openweather.com to analysis the weather in the Milwaukee area, specifically 53212 zip code. We chose this particular data source and project for the following opportunities
@@ -8,6 +27,8 @@ Because it is a local neighborhood bar serving both drinks and foods Monday thru
 - Providing an unique situation where we work with an actual client, gather business requirements, and scope the project
 - Working with a realistic data set that requires primary exploration, cleaning, and standardization before exploring with machine learning and other analysis
 - A dataset that requires further contextual knowledge challenging the importance of context in hand with content
+
+<a name='Questions'/>
 
 ## Questions/Scope
 As a team we decided to incorporate the weather data to see what liquors and food sold best and in which season. We will further analyze the data to see how the liquors and food sales correlate with one another. As our data model, we are looking to use linear regression and unsupervised machine learning.
@@ -17,6 +38,8 @@ As a team we decided to incorporate the weather data to see what liquors and foo
 - What items are sold best together?
 
 ![Tracks_Tavern_Diagram_Planning](https://user-images.githubusercontent.com/82242081/135001252-b133bcc2-9ec4-41a1-9e37-b50111f4eab9.jpeg)
+
+<a name='Team'/>
 
 ## Meet the Team
 While our team has a particular set of deliverables and skills, we have found ourselves overlapping in responsiblities and bringing in fresh ideas and outlooks. As we met over Zoom calls multiple times a week and continued further communications on Slack, we constantly gave one another deliverables to meet and helped hone each other, the data, and analysis. Together we have explored, managed, and analyzed the dataset.
@@ -28,6 +51,8 @@ George ventured in various ways with the data. His initial expeditions of the da
 Though Jess aided in cleaning the data set, identifying and appending the product type field, and helped with pre-explorations through the use of unsupervised machine learning and clustering, she was more effective in project and content managment and creating the analysis report. With strong wordsmithing skills, she not only helped the team relay our findings, Jess also was our point of contact with the client, aligned our deliverables, and gathered business requirements for the team.
 #### Jose Alcivar
 As a detailed individual, Jose took charge in creating a database that was suitable and manageable for the project. By using SQLite, Jose provided us a way to use sqlalchemy and pandas to feed into our coding and create an ease of access to the data. Not only an ease of access but he has taken two different sets of data and joined them for our continued use. In addition to the database support, Jose as well took part in our machine learning explorations and helped provide a rank grouping of the Tracks Tavern product types to see what top types grouped best together.
+
+<a name='preexploration'/>
 
 ## Pre-Exploration
 Before diving immediately into the project, we each explored the data in multiple different ways including but not limited to linear regression, unsupervised/supervised models, and Facebook Prophet. We used linear regression in sklearn to perform the analysis of the Tracks Tavern sales and attempted to scientifically predict the future sales.
@@ -59,7 +84,31 @@ With the data into a single file, we performed an initial exploration into the d
 **Chart 3: Cloud Word Chart**  
 ![image](https://user-images.githubusercontent.com/82473940/135688526-2f8bd792-a501-42fb-8482-905d10f25f46.png)
 
+
+<a name="datab"/>
+
+## Database
+
+As a group, we decided the best system for us to use would be **SQLite**. This is because it has a great advantage in being both local and portable. It helps us to keep a copy of the database in our local repo so we may reference it as needed, and thanks to libraries like **SQLAlchemy** and **Pandas** we were able to simply make a connection to our database and make queries SQL-style if we needed to pull specific data from it.
+
+In order to import our files from our current format (csv) to our database, we ran a code as described in the [csvToSQLite](processing/csvToSQLite.ipynb) file. We used the **sqlalchemy** library for python and the **to_sql()** method from Pandas. We saved our data on a [db file](Database/sales.db), which contains three tables: 
+
+- A concatenated sales data which holds the sales information of both food and drinks.
+- Our weather data, which holds the (weekly) historical weather information. 
+- A type table with each individual product and what type of category each product falls into.
+
+The file can be viewed in a SQLite browser such as DB Browser. An advantage of using our code is that it helps set up the database with new csv files that may be coming. As we proceeded to clean our data and add columns necessary for our analysis, we can easily add them using SQL code and integrate it into a dataframe.
+
+A challenge we encountered when setting up the database was the addition of relationships between tables via PRIMARY and FOREIGN KEYS, as per our [schema](Database/Schema.txt). This issue stems from limitations of both SQLite and the to_sql() method. Though doable through a workaround, it is a process that we deem not necessary for the time being, but we may come back to it if we feel we can gain an advantage from it.
+
+###### ERD
+![diagram_sql_schema](https://user-images.githubusercontent.com/82242081/137826966-d1616551-0692-45b4-b9ba-fcea67640922.jpg)
+
+<a name='MachineLearning'/>
+
 ## Machine Learning - Supervised and Unsupervised
+
+<a name='MLSupervised'/>
 
 ### Tracks Tavern Linear Regression Machine Learning Model
 The purpose of this Machine Learning model is to explore if we can use the sales data from February 2019 and the weather information to predict sales information. We will analyze the sales of different categories, compare with weather for the period and look for any correlations that can help us in our prediction.
@@ -84,41 +133,51 @@ The correlation graph in additions supports that there is no clear correlation b
 From the bar graph we spot seasonally with sales declining in November, December and January. In addition, we clearly see a large spike in May just before summer begins.
 ![download](https://user-images.githubusercontent.com/82242081/136715112-9903b968-c29f-404d-988b-59b5b42fc82c.png)
 
+<a name='MLUnsupervised'/>
+
 ### Grouping Products by Sales ML model
-This model will be seeking combinations of products that group best together.
-We were seeking to use the different types of food through Kmeans Clustering to see how best they work together.
-Types of food and drink may belong to multiple groups, however, individual products can only belong to one type.
-Items are scaled so that they will be weighed equally in the model.
-By using Kmeans, we can help understand how many clusterings there could possibly be.
-The Kmeans in addition will be quicker in predicting the amount of clusters rather than the use of hierarchical clustering.
-Once the cluseters were found and the types were grouped, the model used revenue data to determine the most successful of the groups.
-After running our model and finding 2,499 groupings , we discovered that the most successful group is that one composed by the types Fish, Burger, Beer, Hard Cider and Other. These are the most revenue-generating type of items, at an average of $13.57 per unit of product sold. These are our following top ten groupings:
-1. Fish, Burger, Beer, Hard Cider, Other
-6. Burger, Beer, Breakfast, Fish, Appetizers, Other
-2. Breakfast, Fish, Beer, Brandy, Hard Cider
-7. Breakfast, Fish, Beer, Brandy, Other
-3. Beer, Fish, Hard Cider, Breakfast, Brandy, Appetizers
-8. Fish, Other, Burger, Beer, Brandy
-4. Beer, Fish, Hard Cider, Scotch/Whiskey, Brandy
-9. Beer, Tequila, Fish, Hard Cider, Breakfast, Sandwich
-5. Burger, Fish, Scotch/Whiskey, Beer, Brandy
-10. Fish, Appetizers, Beer,  Burger, Brandy
 
-## Database
-As a group, we decided the best system for us to use would be **SQLite**. This is because it has a great advantage in being both local and portable. It helps us to keep a copy of the database in our local repo so we may reference it as needed, and thanks to libraries like **SQLAlchemy** and **Pandas** we were able to simply make a connection to our database and make queries SQL-style if we needed to pull specific data from it.
+This model will be seeking combinations of products that sell best together.
 
-In order to import our files from our current format (csv) to our database, we ran a code as described in the [csvToSQLite](processing/csvToSQLite.ipynb) file. We used the **sqlalchemy** library for python and the **to_sql()** method from Pandas. We saved our data on a [db file](Database/sales.db), which for the time being contains two tables: 
+We have different types of food and drinks that are sold in a specific period of time. We want to cluster them into groups using **KMeans**, to see which products hold similarity to one another. We then ask the question: *What combination of products will sell best?*
 
-- A concatenated sales data which holds the sales information of both food and drinks.
-- Our weather data, which holds the (weekly) historical weather information. 
-- A type table with each individual product and what type of category each product falls into.
+This is advantegous over only analyzing types of food and drink, as each type may belong to multiple groups, creating parings, however, individual products can only belong to one type and there is not enough information to tell recommendations from it.
 
-The file can be viewed in a SQLite browser such as DB Browser. An advantage of using our code is that it helps set up the database with new csv files that may be coming. As we proceeded to clean our data and add columns necessary for our analysis, we can easily add them using SQL code and integrate it into a dataframe.
+Since we didn't know before hand how many groups we were looking for, the *KMeans* algorithm may yield the best way to declaring how many groups we want. An advantage *KMeans* has over other unsupervised ML algorithms like *Hierarchical Clustering* is its relative speed. We can create thousands of clusters in a relatively short amount of time.
 
-A challenge we encountered when setting up the database was the addition of relationships between tables via PRIMARY and FOREIGN KEYS, as per our [schema](Database/Schema.txt). This issue stems from limitations of both SQLite and the to_sql() method. Though doable through a workaround, it is a process that we deem not necessary for the time being, but we may come back to it if we feel we can gain an advantage from it.
+We wanted on average **10** items per group, so the manner in which we found our number of clusters was by diving the number of datapoints we have over the number of items per group, giving a total of **2500** groups.
 
-###### ERD
-![diagram_sql_schema](https://user-images.githubusercontent.com/82242081/137826966-d1616551-0692-45b4-b9ba-fcea67640922.jpg)
+We then matched every group with its correct type and created a relationship between groups and types. We ended up reducing the total amount of combinations made by 27 distinct types of items to a fraction of them in each group.
+
+Once the clusters were found and the types were grouped, we used revenue data to determine the most successful of the groups via revenue per unit of product sold. We discriminated all groups with less than **5** members since we didn't want any single group with few members that sold well, but only few times, to skew our data significantly.
+
+|   group |   quantity |   total_sales_amount |   revenue_per_unit |
+|--------:|-----------:|---------------------:|-------------------:|
+|     502 |         50 |               680.7  |            13.614  |
+|    1811 |         40 |               526.5  |            13.1625 |
+|     761 |         49 |               639.9  |            13.0592 |
+|    1411 |         35 |               447.01 |            12.7717 |
+|    1505 |         34 |               426.96 |            12.5576 |
+|    1436 |         40 |               492.93 |            12.3232 |
+|    1650 |         76 |               925.53 |            12.178  |
+|    1862 |         46 |               560.01 |            12.1741 |
+|    2154 |         47 |               566.92 |            12.0621 |
+|     498 |         36 |               430.07 |            11.9464 |
+
+
+After running our model, we discover that the most successful group is that one composed by *Beer, Fish, Hard Cider, Breakfast, Brandy* and *Appetizers*. These are the most revenue-generating type of items, at an average of **$13.61** per unit of product sold.
+
+##### Our top 5 combinations:
+
+1. Beer, Fish, Hard Cider, Breakfast, Brandy, Appetizers
+2. 'Beer', 'Fish', 'Hard Cider', 'Scotch/Whiskey', 'Brandy'
+3. 'Fish', 'Appetizers', 'Beer', 'Brandy', 'Hard Cider'
+4. 'Burger', 'Fish', 'Scotch/Whiskey', 'Beer', 'Brandy'
+5. 'Brandy', 'Beer', 'Burger', 'Breakfast', 'Fish'
+
+As you can see, similar groups composing of a few items sell very well together.
+
+<a name='finalAnalysis'/>
 
 ## Final Analysis & Thoughts
 As we worked through the data, we found it was best not to use Facebook Prophet as it did not work best in our explorations. As we moved forward with our data, we found that using the pickle library worked well in condensing and saving our model and images for the web app in order to run effeciently. As for our groups, we found with aid of plotly express were able to reach our best possible results.
@@ -128,9 +187,13 @@ While we had hoped to see a stronger correlation between weather and sales, we t
 
 With the pandemic, we found that using the unsupervised machine learning models to predict future sales were problematic. In addition, we discovered large outliers in the data that coincided with the NBA finals and subsequently the Buck's victory. What we do see is an effective business with a cyclical pattern in revenue as per our monthly average chart, where the locals will drink no matter the weather and enjoy a fish fry or two.
 In the future exploration of the data, we  hoped to gather daily breakdowns of revenue to see if the weather data would correlate and possibly see if there is data on Track's volleyball league and its influence with other datasets. Through all these explorations we, as a team, found this dataset sufficiently challenging and gathered all our skills from this course to venture and analyze a real world project. We would like to thank Michael Rebers in providing this oppurtunity for us and sharing his data for furthering our education.
+
+<a name='DashboardnPresentation'/>
+
 ## Dashboard
 
 https://tracks-tavern.herokuapp.com/
 
 ## Presentation
+
 https://docs.google.com/presentation/d/1VRICFz63dp378-NGYYzXR_Gvo7oOsKVnM7d9bCKS_gs/edit?usp=sharing
