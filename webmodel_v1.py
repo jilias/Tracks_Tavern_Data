@@ -147,7 +147,7 @@ def beer_predictor():
         elif analysis == 'Beer Sales By Month':
             st.subheader(analysis)
             st.markdown('The sales by month column is used to see if there is any seasonality that can help our model')
-            st.image("./imgs/barplot.jpg", wuse_column_width=True)
+            st.image("./imgs/barplot.jpg", use_column_width=True)
         
         elif analysis == 'Correlation Heatmap':
             st.subheader(analysis)
