@@ -119,7 +119,7 @@ A challenge we encountered when setting up the database was the addition of rela
 
 ###### ERD
 
-![ERD](imgs/ERD.png)
+![ERD](https://github.com/jilias/Tracks_Tavern_Data/blob/main/imgs/ERD.png)
 
 ## Final Analysis & Thoughts
 As we worked through the data, we found it was best not to use Facebook Prophet as it did not work best in our explorations. As we moved forward with our data, we found that using the pickle library worked well in condensing and saving our model and images for the web app in order to run effeciently. As for our groups, we found with aid of plotly express were able to reach our best possible results.
