@@ -8,4 +8,3 @@ matplotlib
 seaborn
 sklearn
 sqlalchemy
-sqlite
