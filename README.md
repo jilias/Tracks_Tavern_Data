@@ -118,8 +118,7 @@ The file can be viewed in a SQLite browser such as DB Browser. An advantage of u
 A challenge we encountered when setting up the database was the addition of relationships between tables via PRIMARY and FOREIGN KEYS, as per our [schema](Database/Schema.txt). This issue stems from limitations of both SQLite and the to_sql() method. Though doable through a workaround, it is a process that we deem not necessary for the time being, but we may come back to it if we feel we can gain an advantage from it.
 
 ###### ERD
-
-![ERD](https://github.com/jilias/Tracks_Tavern_Data/blob/main/imgs/ERD_1.jpg)
+![diagram_sql_schema](https://user-images.githubusercontent.com/82242081/137826966-d1616551-0692-45b4-b9ba-fcea67640922.jpg)
 
 ## Final Analysis & Thoughts
 As we worked through the data, we found it was best not to use Facebook Prophet as it did not work best in our explorations. As we moved forward with our data, we found that using the pickle library worked well in condensing and saving our model and images for the web app in order to run effeciently. As for our groups, we found with aid of plotly express were able to reach our best possible results.
