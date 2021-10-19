@@ -34,7 +34,6 @@ Because it is a local neighborhood bar serving both drinks and foods Monday thru
 As a team we decided to incorporate the weather data to see what liquors and food sold best and in which season. We will further analyze the data to see how the liquors and food sales correlate with one another. As our data model, we are looking to use linear regression and unsupervised machine learning.
 - Does the weather influence the sales?
 - What items can be best grouped together?
-- What does an average week look like at Tracks?
 - What items are sold best together?
 
 ![Tracks_Tavern_Diagram_Planning](https://user-images.githubusercontent.com/82242081/135001252-b133bcc2-9ec4-41a1-9e37-b50111f4eab9.jpeg)
